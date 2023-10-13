@@ -7,6 +7,7 @@ const screenWidth = Dimensions.get("window").width;
 export default function App() {
   return (
     <View style={styles.container}>
+      <ResponsiveAppBar />
       <BankAccountContainer></BankAccountContainer>
       <ChartComponent></ChartComponent>
       <StatusBar style="auto" />
