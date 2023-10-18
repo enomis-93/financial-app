@@ -81,12 +81,14 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
 
 	const saveAccount = () => {
 		props.backAccounts.push({
+            id:props.backAccounts.length,
 			name: name,
 			color: "none",
 			tipo: "portafoglio",
 			saldo: saldo,
 			valuta: valuta,
 		});
+		handleClose();
 		return;
 	};
 
