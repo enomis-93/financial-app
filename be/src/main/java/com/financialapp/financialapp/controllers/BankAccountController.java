@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequestMapping("/api/bankAccount")
 public class BankAccountController {
 
@@ -23,6 +24,7 @@ public class BankAccountController {
     }
 
     @PostMapping("/new")
+    
     public ResponseEntity<BankAccount> createNewBankAccount(@RequestBody BankAccount bankAccount) {
         BankAccount createdAccount = this.bankAccountService.createNewBankAccount(bankAccount);
 

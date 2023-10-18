@@ -1,5 +1,10 @@
 {
   "expo": {
+    "extra": {
+
+      "proxy": "http://localhost:19006"
+
+  },
     "name": "financial-app",
     "slug": "financial-app",
     "version": "1.0.0",
