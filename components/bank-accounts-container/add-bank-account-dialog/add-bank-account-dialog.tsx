@@ -60,6 +60,11 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
         onClose(false);
     };
 
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        console.log(event);
+    };
+
     return (
         <Dialog
             open={open}
@@ -82,8 +87,8 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
                 <CloseIcon />
             </IconButton>
             <Divider />
-            <DialogContent>
-                <Container>
+            <form onSubmit={handleSubmit}>
+                <DialogContent>
                     <div
                         style={{
                             display: 'flex',
@@ -162,20 +167,21 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
                             label='Archivia'
                         />
                     </div>
-                </Container>
-            </DialogContent>
-            <DialogActions
-                sx={{ p: 1 }}
-                style={{ display: 'flex', justifyContent: 'center' }}
-            >
-                <Button
-                    variant='contained'
-                    color='success'
-                    style={{ borderRadius: '20px', padding: '0.5em 3em' }}
+                </DialogContent>
+                <DialogActions
+                    sx={{ p: 1 }}
+                    style={{ display: 'flex', justifyContent: 'center' }}
                 >
-                    Save
-                </Button>
-            </DialogActions>
+                    <Button
+                        variant='contained'
+                        color='success'
+                        type='submit'
+                        style={{ borderRadius: '20px', padding: '0.5em 3em' }}
+                    >
+                        Save
+                    </Button>
+                </DialogActions>
+            </form>
         </Dialog>
     );
 }
