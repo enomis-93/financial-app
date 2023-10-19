@@ -15,10 +15,31 @@ public class Transaction implements Serializable {
     @Column(name="date")
     private Date date;
 
-
     @ManyToOne
     @JoinColumn(name = "idbank_account")
     private BankAccount bankAccount;
 
+    public Transaction() {
+    }
 
+    public Transaction(Date date, BankAccount bankAccount) {
+        this.date = date;
+        this.bankAccount = bankAccount;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+    public BankAccount getBankAccount() {
+        return bankAccount;
+    }
+
+    public void setBankAccount(BankAccount bankAccount) {
+        this.bankAccount = bankAccount;
+    }
 }

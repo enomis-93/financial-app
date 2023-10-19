@@ -1,5 +1,6 @@
 package com.financialapp.financialapp.controllers;
 
+import com.financialapp.financialapp.dto.TransactionInfoDTO;
 import com.financialapp.financialapp.entities.BankAccount;
 import com.financialapp.financialapp.services.BankAccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -31,10 +33,22 @@ public class BankAccountController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdAccount);
     }
 
+
+
     @GetMapping("/all")
     public ResponseEntity<List<BankAccount>> getAllBankAccounts(){
         List<BankAccount> bankAccounts = this.bankAccountService.getAllBankAccounts();
 
         return ResponseEntity.status(HttpStatus.OK).body(bankAccounts);
     }
+
+    @PutMapping("/update-balance/{id}")
+    public ResponseEntity<BankAccount> updateBankAccount(@PathVariable(name = "id") Long bankAccountID, @RequestBody TransactionInfoDTO transactionInfoDTO) throws ParseException {
+
+        BankAccount bankAccountToUpdate = this.bankAccountService.updateBankAccountBalance(bankAccountID, transactionInfoDTO);
+
+        return ResponseEntity.status(HttpStatus.OK).body(bankAccountToUpdate);
+    }
+
+
 }
