@@ -36,20 +36,15 @@ function MoneyAdder(props: Props) {
 
         fetch(
             `http://localhost:8080/api/bankAccount/update-balance/${bankAccountID}`,
-            {  headers: {
-              'Content-Type': 'application/json', // Assicurati che il tipo di contenuto sia corretto
-          }, method: 'PUT',body: JSON.stringify(transactionInfo) }
+            { body: JSON.stringify(transactionInfo) }
         )
-            .then((response) => {
-                
-                console.log(response)
-                return;
+            .then(() => {
+                alert('Cash updated !');
             })
-            .catch((error) => {
-                alert(error);
-                return;
+            .catch(() => {
+                alert('An error occured trying to update cash');
             });
-        
+        return;
     };
 
     return (

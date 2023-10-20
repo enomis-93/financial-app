@@ -46,7 +46,7 @@ export default function BankAccountContainer() {
             setBankAccounts(res);
             console.log(res);
         });
-    });
+    }, []);
     const clickOpenAdder = (bankAccountID) => {
         setOpenAdder(true);
         setSelectedItemID(bankAccountID);
