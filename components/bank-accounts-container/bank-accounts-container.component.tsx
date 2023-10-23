@@ -21,18 +21,8 @@ const styles = {
     add_account: {}
 };
 
-let conti = [
-    {
-        id: 123,
-        name: 'contanti',
-        color: 'none',
-        tipo: 'portafoglio',
-        saldo: 0,
-        valuta: '$'
-    }
-];
 
-export default function BankAccountContainer() {
+export default function BankAccountContainer({onBankAccountIDChange}) {
     const [bankAccounts, setBankAccounts] = React.useState([{}]);
     const [open, setOpen] = React.useState(false);
     const [openAdder, setOpenAdder] = React.useState(false);
@@ -41,20 +31,33 @@ export default function BankAccountContainer() {
     let saldo = 0;
     let valuta = '$';
     let id = 0;
+
+
     useEffect(() => {
+        console.log("useEffect called")
         apiBankAccountService.getAccount().then((res) => {
             setBankAccounts(res);
             console.log(res);
+            console.log(openAdder)
         });
-    }, []);
+     
+    
+    }, [openAdder==false]);
+    const handleBankAccountIDChange =( bankAccountID: number) =>{
+        onBankAccountIDChange(bankAccountID)
+        console.log(bankAccountID)
+        console.log(selectedItemID)
+    }
     const clickOpenAdder = (bankAccountID) => {
         setOpenAdder(true);
         setSelectedItemID(bankAccountID);
-        console.log(bankAccountID);
+        handleBankAccountIDChange(bankAccountID)
+       
     };
 
     const closeAdder = (value: boolean) => {
         setOpenAdder(false);
+        
     };
 
     const handleClickOpen = () => {
@@ -95,6 +98,7 @@ export default function BankAccountContainer() {
                     openAdder={openAdder}
                     bankAccountID={selectedItemID}
                     closeAdder={closeAdder}
+                    
                 ></MoneyAdder>
             </div>
         </>

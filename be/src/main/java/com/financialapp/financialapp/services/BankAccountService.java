@@ -55,11 +55,11 @@ public class BankAccountService {
 
 
         // Register transaction
-        String pattern = "MM-dd-yyyy hh:ss";
+        String pattern = "MM-dd-yyyy hh:mm";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
         String formattedDate = simpleDateFormat.format(new Date());
 
-        Transaction transaction = new Transaction(simpleDateFormat.parse(formattedDate), bankAccountToUpdate.get());
+        Transaction transaction = new Transaction(simpleDateFormat.parse(formattedDate),transactionInfoDTO.getAddCash()?"add":"remove" ,transactionInfoDTO.getBalance(),bankAccountToUpdate.get());
 
         this.transactionRepository.save(transaction);
 

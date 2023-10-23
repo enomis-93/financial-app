@@ -12,8 +12,15 @@ public class Transaction implements Serializable {
     @Column(name = "id_transaction", nullable = false)
     private Long id;
 
+
+
     @Column(name="date")
     private Date date;
+
+    @Column(name="type")
+    private String type;
+    @Column(name="amount")
+    private Integer amount;
 
     @ManyToOne
     @JoinColumn(name = "idbank_account")
@@ -22,8 +29,10 @@ public class Transaction implements Serializable {
     public Transaction() {
     }
 
-    public Transaction(Date date, BankAccount bankAccount) {
+    public Transaction(Date date, String type, Integer amount, BankAccount bankAccount) {
         this.date = date;
+        this.type = type;
+        this.amount = amount;
         this.bankAccount = bankAccount;
     }
 
@@ -41,5 +50,29 @@ public class Transaction implements Serializable {
 
     public void setBankAccount(BankAccount bankAccount) {
         this.bankAccount = bankAccount;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Integer getAmount() {
+        return amount;
+    }
+
+    public void setAmount(Integer amount) {
+        this.amount = amount;
     }
 }
