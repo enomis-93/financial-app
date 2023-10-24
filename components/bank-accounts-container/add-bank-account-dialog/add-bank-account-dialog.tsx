@@ -19,7 +19,7 @@ import ColorPickerInput from './color-picker-input/color-picker-input';
 import BankAccountInput from './bank-account-type-input/bank-account-type';
 import NumberInput from './number-input/number-input';
 import { useSelector,useDispatch } from "react-redux";
-import { apiBankAccountService } from '../../../Service/BankAccount.Service';
+import { apiBankAccountService } from '../../../Service/BankAccount.service';
 export interface AddBankAccountDialogProps {
     open: boolean;
     onClose: (value: boolean) => void;
@@ -47,7 +47,11 @@ const currencies = [
 ];
 
 export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
-    
+
+    const [color,setColor] =React.useState('')
+    const handleChangeColor =(data:any)=>{ setColor(data)}
+    const [type,setType] = React.useState('')
+    const handleChangeType=(data:any)=>{setType(data)}
     const { onClose, open } = props;
     const [excludeFromStats, setExcludeFromStats] = React.useState(false);
     const [archive, setArchive] = React.useState(false);
@@ -87,10 +91,10 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
     const saveAccount = () => {
         var Account={
             name:name,
-            color:'red',
-            type:'portafogliop',
+            color: color,
+            type:type,
             balance: saldo,
-            currency: '$'
+            currency: valuta
            }
         
         apiBankAccountService.addAccount(Account)
@@ -137,7 +141,7 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
                             onChange={handleOnchangeName}
                             label='Name'
                         />
-                        <ColorPickerInput />
+                        <ColorPickerInput colorFromFather={handleChangeColor} />
                     </div>
                     <div
                         style={{
@@ -146,7 +150,7 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
                             marginBottom: '0.5em'
                         }}
                     >
-                        <BankAccountInput></BankAccountInput>
+                        <BankAccountInput typeFromFather={handleChangeType} ></BankAccountInput>
                     </div>
                     <div
                         style={{

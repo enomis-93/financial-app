@@ -23,7 +23,7 @@ const styles = {
 };
 
 export default function BankAccountContainer({ onBankAccountIDChange }) {
-    const dialog =useSelector((state)=>state.dialog);
+    const dialog =useSelector((state:{dialog:boolean})=>state.dialog);
     const dispatch =useDispatch()
   const [bankAccounts, setBankAccounts] = React.useState([{}]);
   const [open, setOpen] = React.useState(false);
@@ -45,6 +45,7 @@ export default function BankAccountContainer({ onBankAccountIDChange }) {
 
     });
   }, [openAdder == false, dialog==false]);
+
   const handleBankAccountIDChange = (bankAccountID: number) => {
     onBankAccountIDChange(bankAccountID);
     console.log(bankAccountID);

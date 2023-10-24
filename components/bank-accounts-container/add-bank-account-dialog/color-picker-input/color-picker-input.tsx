@@ -4,14 +4,17 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export default function ColorPickerInput() {
+export default function ColorPickerInput(props) {
     const [color, setColor] = React.useState<string | number>('');
     const [open, setOpen] = React.useState(false);
 
     const handleChange = (event: SelectChangeEvent<typeof color>) => {
         setColor(event.target.value);
+        props.colorFromFather(event.target.value);
     };
-
+    /*const sendColorToParent=()=>{
+        props.colorFromFather(color)
+    }*/
     const handleClose = () => {
         setOpen(false);
     };
