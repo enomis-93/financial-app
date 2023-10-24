@@ -6,6 +6,10 @@ import BankAccountContainer from './components/bank-accounts-container/bank-acco
 import ResponsiveAppBar from './components/header/responsive-app-bar.component';
 import React, {useState } from 'react';
 const screenWidth = Dimensions.get("window").width;
+import { Provider } from 'react-redux';
+import  store  from './store';
+
+
 export default function App() {
     const[selectedIdBankAccount,setSelectedIdBankAccount]=useState(0)
 
@@ -15,13 +19,14 @@ export default function App() {
         console.log(bankAccountId)
     }
   return (
-    
+    <Provider store={store}>
     <View style={styles.container}>
       <ResponsiveAppBar />
       <BankAccountContainer onBankAccountIDChange={onBankAccountIDChange}></BankAccountContainer>
       <ChartComponent selectedBankAccountID={selectedIdBankAccount} ></ChartComponent>
       <StatusBar style="auto" />
     </View>
+    </Provider>
   );
 
 }

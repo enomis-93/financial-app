@@ -18,12 +18,14 @@ import ColorPicker from './color-picker-input/color-picker-input';
 import ColorPickerInput from './color-picker-input/color-picker-input';
 import BankAccountInput from './bank-account-type-input/bank-account-type';
 import NumberInput from './number-input/number-input';
-
+import { useSelector,useDispatch } from "react-redux";
+import { apiBankAccountService } from '../../../Service/BankAccount.Service';
 export interface AddBankAccountDialogProps {
     open: boolean;
     onClose: (value: boolean) => void;
     backAccounts: Object[];
 }
+
 
 const currencies = [
     {
@@ -45,9 +47,11 @@ const currencies = [
 ];
 
 export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
+    
     const { onClose, open } = props;
     const [excludeFromStats, setExcludeFromStats] = React.useState(false);
     const [archive, setArchive] = React.useState(false);
+    const dispatch =useDispatch()
 
     const handleExcludeFromStatsChange = (event) => {
         setExcludeFromStats(event.target.checked);
@@ -79,16 +83,19 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
         setValuta(event.target.value);
     };
 
+   
     const saveAccount = () => {
-        props.backAccounts.push({
-            id: props.backAccounts.length,
-            name: name,
-            color: 'none',
-            tipo: 'portafoglio',
-            saldo: saldo,
-            valuta: valuta
-        });
+        var Account={
+            name:name,
+            color:'red',
+            type:'portafogliop',
+            balance: saldo,
+            currency: '$'
+           }
+        
+        apiBankAccountService.addAccount(Account)
         handleClose();
+        dispatch({type: 'TOGGLE_BOOLEAN'})
         return;
     };
 

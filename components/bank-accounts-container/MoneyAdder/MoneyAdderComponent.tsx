@@ -7,6 +7,8 @@ import { Button, Text } from "react-native";
 import NumberInput from "../add-bank-account-dialog/number-input/number-input";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import { connect } from "react-redux";
+
 
 export interface Props {
   openAdder: boolean;
@@ -18,6 +20,8 @@ export interface Props {
 const styles = {};
 const coso = "saldo";
 function MoneyAdder(props: Props) {
+  
+  
   const [valueToUpdate, setValueToUpdate] = React.useState(null);
 
   const closeDialog = () => {
@@ -121,7 +125,10 @@ function MoneyAdder(props: Props) {
         </div>
       </DialogContent>
     </Dialog>
+    
   );
+  
 }
+
 
 export default MoneyAdder;
