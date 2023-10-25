@@ -7,6 +7,8 @@ import { Button, Text } from "react-native";
 import NumberInput from "../add-bank-account-dialog/number-input/number-input";
 import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
+import { connect } from "react-redux";
+
 
 export interface Props {
   openAdder: boolean;
@@ -18,33 +20,38 @@ export interface Props {
 const styles = {};
 const coso = "saldo";
 function MoneyAdder(props: Props) {
+  
+  
+  const [valueToUpdate, setValueToUpdate] = React.useState(null);
+
   const closeDialog = () => {
     props.closeAdder(false);
   };
-  const [cash, setCash] = React.useState(0);
 
-  function removeCash(conto: any, cash: number) {
-    console.log("----")
-    conto.saldo = Number(conto.saldo) - Number(cash);
-    setCash(0);
-    
-  }
+  const updateBalance = (
+    bankAccountID: number,
+    cash: number,
+    addingCash: boolean
+  ) => {
+    let transactionInfo: { balance: number; addCash: boolean } = {
+      balance: cash,
+      addCash: addingCash,
+    };
+    const headers = { "Content-Type": "application/json" };
 
-  function addCash(conto: any, cash: number) {
-   
-    
-    console.log("+++++")
-    conto.saldo = Number(conto.saldo) + Number(cash)
-    setCash(0);
-    
-  }
- 
-
-  function handleChangeCash(event) {
-    
-    setCash(event.target.value)
-    
-  }
+    fetch(
+      `http://localhost:8080/api/bankAccount/update-balance/${bankAccountID}`,
+      { body: JSON.stringify(transactionInfo), method: "PUT", headers }
+    )
+      .then(() => {
+        alert("Cash updated !");
+        closeDialog();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    return;
+  };
 
   return (
     <Dialog
@@ -76,20 +83,19 @@ function MoneyAdder(props: Props) {
         >
           <RemoveIcon
             onClick={() => {
-              cash > 0 ? setCash(Number(cash) - 1) : setCash(Number(cash));
+              setValueToUpdate(valueToUpdate - 1);
             }}
           />
           <TextField
-            onChange={handleChangeCash}
             id="numerField"
             style={{}}
             type="number"
             placeholder="0"
-            value={cash?Number(cash):null}
+            value={+valueToUpdate}
           />
           <AddIcon
             onClick={() => {
-              setCash(Number(cash) + 1);
+              setValueToUpdate(valueToUpdate + 1);
             }}
           />
         </div>
@@ -103,25 +109,26 @@ function MoneyAdder(props: Props) {
         >
           <Button
             onPress={() => {
-              removeCash(props.conti.find(obj => obj.id === props.bankAccountID),cash);
-              closeDialog();
+              updateBalance(props.bankAccountID, valueToUpdate, false);
+              
             }}
             title="Rimuovi"
             color={"red"}
           ></Button>
           <Button
             onPress={() => {
-              addCash(props.conti.find(obj => obj.id === props.bankAccountID),cash);
-              closeDialog();
+              updateBalance(props.bankAccountID, valueToUpdate, true);
             }}
             title="Aggiungi"
             color={"black"}
           ></Button>
         </div>
-       
       </DialogContent>
     </Dialog>
+    
   );
+  
 }
+
 
 export default MoneyAdder;

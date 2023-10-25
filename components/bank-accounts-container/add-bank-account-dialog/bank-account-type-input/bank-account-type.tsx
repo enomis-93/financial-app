@@ -4,12 +4,13 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export default function BankAccountTypeInput() {
+export default function BankAccountTypeInput(props) {
     const [type, setType] = React.useState<string | number>('');
     const [open, setOpen] = React.useState(false);
 
     const handleChange = (event: SelectChangeEvent<typeof type>) => {
         setType(event.target.value);
+        props.typeFromFather(event.target.value)
     };
 
     const handleClose = () => {
