@@ -18,14 +18,16 @@ import ColorPicker from './color-picker-input/color-picker-input';
 import ColorPickerInput from './color-picker-input/color-picker-input';
 import BankAccountInput from './bank-account-type-input/bank-account-type';
 import NumberInput from './number-input/number-input';
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from 'react-redux';
+import {
+    selectIsDialogOpen,
+    setClose,
+    toggleDialog
+} from '../../../store/store';
 import { apiBankAccountService } from '../../../Service/BankAccount.service';
 export interface AddBankAccountDialogProps {
-    open: boolean;
-    onClose: (value: boolean) => void;
     backAccounts: Object[];
 }
-
 
 const currencies = [
     {
@@ -47,15 +49,19 @@ const currencies = [
 ];
 
 export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
-
-    const [color,setColor] =React.useState('')
-    const handleChangeColor =(data:any)=>{ setColor(data)}
-    const [type,setType] = React.useState('')
-    const handleChangeType=(data:any)=>{setType(data)}
-    const { onClose, open } = props;
+    const [color, setColor] = React.useState('');
+    const handleChangeColor = (data: any) => {
+        setColor(data);
+    };
+    const [type, setType] = React.useState('');
+    const handleChangeType = (data: any) => {
+        setType(data);
+    };
     const [excludeFromStats, setExcludeFromStats] = React.useState(false);
     const [archive, setArchive] = React.useState(false);
-    const dispatch =useDispatch()
+
+    const isDialogOpen = useSelector(selectIsDialogOpen);
+    const dispatch = useDispatch();
 
     const handleExcludeFromStatsChange = (event) => {
         setExcludeFromStats(event.target.checked);
@@ -66,7 +72,7 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
     };
 
     const handleClose = () => {
-        onClose(false);
+        dispatch(setClose());
     };
 
     const [name, setName] = React.useState('');
@@ -87,25 +93,24 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
         setValuta(event.target.value);
     };
 
-   
     const saveAccount = () => {
-        var Account={
-            name:name,
+        var Account = {
+            name: name,
             color: color,
-            type:type,
+            type: type,
             balance: saldo,
             currency: valuta
-           }
-        
-        apiBankAccountService.addAccount(Account)
+        };
+
+        apiBankAccountService.addAccount(Account);
         handleClose();
-        dispatch({type: 'TOGGLE_BOOLEAN'})
+        dispatch({ type: 'TOGGLE_BOOLEAN' });
         return;
     };
 
     return (
         <Dialog
-            open={open}
+            open={isDialogOpen}
             onClose={handleClose}
             aria-labelledby='customized-dialog-title'
         >
@@ -150,7 +155,9 @@ export default function AddBankAccountDialog(props: AddBankAccountDialogProps) {
                             marginBottom: '0.5em'
                         }}
                     >
-                        <BankAccountInput typeFromFather={handleChangeType} ></BankAccountInput>
+                        <BankAccountInput
+                            typeFromFather={handleChangeType}
+                        ></BankAccountInput>
                     </div>
                     <div
                         style={{

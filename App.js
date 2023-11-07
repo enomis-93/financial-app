@@ -7,7 +7,7 @@ import ResponsiveAppBar from './components/header/responsive-app-bar.component';
 import React, { useState } from 'react';
 const screenWidth = Dimensions.get('window').width;
 import { Provider } from 'react-redux';
-import store from './store';
+import store from './store/store';
 import { API_URL, NODE_ENV } from '@env';
 
 export default function App() {
@@ -18,11 +18,6 @@ export default function App() {
         console.log(bankAccountId);
     };
     return (
-        // <View style={{ padding: '1em', marginTop: '2em' }}>
-        //     <Text>Hello world</Text>
-        //     <Text>Enviroment variable is: {JSON.stringify(process.env)}</Text>
-        // </View>
-
         <Provider store={store}>
             <View style={styles.container}>
                 <ResponsiveAppBar />

@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { apiBankAccountService } from '../../Service/BankAccount.service';
+import { selectIsDialogOpen, setOpen, toggleDialog } from '../../store/store';
 
 const styles = {
     container: {
@@ -24,10 +25,7 @@ const styles = {
 };
 
 export default function BankAccountContainer({ onBankAccountIDChange }) {
-    const dialog = useSelector((state: { dialog: boolean }) => state.dialog);
-    const dispatch = useDispatch();
     const [bankAccounts, setBankAccounts] = React.useState([{}]);
-    const [open, setOpen] = React.useState(false);
     const [openAdder, setOpenAdder] = React.useState(false);
     const [selectedItemID, setSelectedItemID] = React.useState(null);
 
@@ -35,15 +33,16 @@ export default function BankAccountContainer({ onBankAccountIDChange }) {
     let valuta = '$';
     let id = 0;
 
+    const dispatch = useDispatch();
+
     useEffect(() => {
         console.log('useEffect called');
         apiBankAccountService.getAccount().then((res) => {
             setBankAccounts(res);
             console.log(res);
             console.log(openAdder);
-            console.log(dialog);
         });
-    }, [openAdder == false, dialog == false]);
+    }, [openAdder == false]);
 
     const handleBankAccountIDChange = (bankAccountID: number) => {
         onBankAccountIDChange(bankAccountID);
@@ -61,47 +60,39 @@ export default function BankAccountContainer({ onBankAccountIDChange }) {
     };
 
     const handleClickOpen = () => {
-        setOpen(true);
-        dispatch({ type: 'TOGGLE_BOOLEAN' });
+        dispatch(setOpen());
     };
 
-    const handleClose = (value: boolean) => {
-        setOpen(false);
-    };
 
     return (
-        <>
-            <div style={styles.container}>
-                <ListWallet
-                    bankAccounts={bankAccounts}
-                    onButtonClick={clickOpenAdder}
-                />
-                <Button
-                    style={styles.add_account}
-                    onClick={handleClickOpen}
-                    variant='outlined'
-                >
-                    <AccountBalanceIcon
-                        style={{ color: 'grey', padding: '0em 0.5em' }}
-                    ></AccountBalanceIcon>
-                    <p style={{ color: 'grey', margin: 0 }}>
-                        Aggiungi un nuovo conto
-                    </p>
-                    <AddIcon style={{ color: 'grey' }}></AddIcon>
-                </Button>
-                <AddBankAccountDialog
-                    backAccounts={bankAccounts}
-                    open={open}
-                    onClose={handleClose}
-                ></AddBankAccountDialog>
-                <MoneyAdder
-                    conti={bankAccounts}
-                    openAdder={openAdder}
-                    bankAccountID={selectedItemID}
-                    closeAdder={closeAdder}
-                ></MoneyAdder>
-            </div>
-        </>
+        <div style={styles.container}>
+            <ListWallet
+                bankAccounts={bankAccounts}
+                onButtonClick={clickOpenAdder}
+            />
+            <Button
+                style={styles.add_account}
+                onClick={handleClickOpen}
+                variant='outlined'
+            >
+                <AccountBalanceIcon
+                    style={{ color: 'grey', padding: '0em 0.5em' }}
+                ></AccountBalanceIcon>
+                <p style={{ color: 'grey', margin: 0 }}>
+                    Aggiungi un nuovo conto
+                </p>
+                <AddIcon style={{ color: 'grey' }}></AddIcon>
+            </Button>
+            <AddBankAccountDialog
+                backAccounts={bankAccounts}
+            ></AddBankAccountDialog>
+            <MoneyAdder
+                conti={bankAccounts}
+                openAdder={openAdder}
+                bankAccountID={selectedItemID}
+                closeAdder={closeAdder}
+            ></MoneyAdder>
+        </div>
     );
 }
 
