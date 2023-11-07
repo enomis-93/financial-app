@@ -7,10 +7,12 @@ import { Button, Text } from 'react-native';
 import NumberInput from '../add-bank-account-dialog/number-input/number-input';
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
-import { connect } from 'react-redux';
+import { connect, useDispatch } from 'react-redux';
+import {useSelector} from 'react-redux';
+import { moneyAdderActions } from '../../../store/store';
 
 export interface Props {
-    openAdder: boolean;
+    
     bankAccountID: number;
     conti: any;
     closeAdder: (value: boolean) => void;
@@ -19,16 +21,16 @@ export interface Props {
 const styles = {};
 const coso = 'saldo';
 function MoneyAdder(props: Props) {
+    const isMoneyAdderDialogOpen= useSelector((state)=>state.moneyAdderDialog.isOpen)
     const [valueToUpdate, setValueToUpdate] = React.useState(null);
+    const dispatch = useDispatch();
 
     const API_URL =
         process.env.NODE_ENV == 'development'
             ? 'http://localhost:8080'
             : 'http://example-site.com';
 
-    const closeDialog = () => {
-        props.closeAdder(false);
-    };
+  
 
     const updateBalance = (
         bankAccountID: number,
@@ -48,7 +50,7 @@ function MoneyAdder(props: Props) {
         })
             .then(() => {
                 alert('Cash updated !');
-                closeDialog();
+                
             })
             .catch((error) => {
                 console.log(error);
@@ -58,14 +60,14 @@ function MoneyAdder(props: Props) {
 
     return (
         <Dialog
-            open={props.openAdder}
-            onClose={props.closeAdder}
+            open={isMoneyAdderDialogOpen}
+            
             aria-labelledby='customized-dialog-title'
         >
             <DialogTitle sx={{ m: 0, p: 1 }}>Contanti</DialogTitle>
             <IconButton
                 aria-label='close'
-                onClick={closeDialog}
+                onClick={()=>dispatch(moneyAdderActions.setClose())}
                 sx={{
                     position: 'absolute',
                     right: 8,

@@ -7,7 +7,8 @@ import React, { useEffect } from 'react';
 
 import { useSelector, useDispatch } from 'react-redux';
 import { apiBankAccountService } from '../../Service/BankAccount.service';
-import { selectIsDialogOpen, setOpen, toggleDialog } from '../../store/store';
+import { selectIsDialogOpen, setOpen} from '../../store/store';
+import { moneyAdderActions } from '../../store/store';
 
 const styles = {
     container: {
@@ -50,13 +51,13 @@ export default function BankAccountContainer({ onBankAccountIDChange }) {
         console.log(selectedItemID);
     };
     const clickOpenAdder = (bankAccountID) => {
-        setOpenAdder(true);
+        dispatch(moneyAdderActions.setOpen())
         setSelectedItemID(bankAccountID);
         handleBankAccountIDChange(bankAccountID);
     };
 
     const closeAdder = (value: boolean) => {
-        setOpenAdder(false);
+        dispatch(moneyAdderActions.setClose())
     };
 
     const handleClickOpen = () => {
@@ -88,7 +89,7 @@ export default function BankAccountContainer({ onBankAccountIDChange }) {
             ></AddBankAccountDialog>
             <MoneyAdder
                 conti={bankAccounts}
-                openAdder={openAdder}
+               
                 bankAccountID={selectedItemID}
                 closeAdder={closeAdder}
             ></MoneyAdder>
